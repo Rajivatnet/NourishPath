@@ -1,6 +1,8 @@
 # NourishPath
 
-Hackathon MVP for practical, nutrition-focused wellbeing guidance. This Phase 2 foundation provides a React frontend, Express API, and demo-only guest access.
+An AI-powered nutrition companion that turns health goals, dietary needs, and local food preferences into safe meal suggestions, shopping lists, and direct grocery-buying links.
+
+This Phase 2 foundation provides a React frontend, Express API, and demo-only guest access.
 
 ## Demo access
 
@@ -34,6 +36,6 @@ The API health check is available at `http://localhost:5000/api/health` and the 
 
 ## Structure
 
-- `client/` — React + Vite interface
-- `server/` — Express REST API
-- `docs/` — product and technical notes
+- `client/` - React + Vite interface
+- `server/` - Express REST API
+- `docs/` - product and technical notes

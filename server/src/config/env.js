@@ -10,4 +10,5 @@ export const env = Object.freeze({
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(required('PORT', '5000')),
   clientOrigin: required('CLIENT_ORIGIN', 'http://localhost:5173'),
+  mongoUri: process.env.MONGODB_URI || '',
 });

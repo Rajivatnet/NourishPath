@@ -11,3 +11,17 @@ export async function login(username, password) {
   if (!response.ok) throw new Error(payload.message || 'Unable to sign in.');
   return payload;
 }
+
+async function profileRequest(path, username, options = {}) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: { 'Content-Type': 'application/json', 'x-demo-user': username, ...options.headers },
+  });
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.errors?.[0] || payload.message || 'Unable to save your profile.');
+  return payload;
+}
+
+export function getProfile(username) { return profileRequest('/profiles/me', username); }
+export function saveProfile(username, profile) { return profileRequest('/profiles/me', username, { method: 'PUT', body: JSON.stringify(profile) }); }
+export function acknowledgeDisclaimer(username) { return profileRequest('/profiles/disclaimer-acknowledgement', username, { method: 'POST' }); }

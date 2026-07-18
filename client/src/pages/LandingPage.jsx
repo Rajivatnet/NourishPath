@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiClient';
 
 const demoUsers = ['Guest1', 'Guest2', 'Guest3'];
@@ -8,6 +9,7 @@ export default function LandingPage() {
   const [password, setPassword] = useState('ADMIN');
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -15,7 +17,8 @@ export default function LandingPage() {
     setStatus('');
     try {
       const result = await login(username, password);
-      setStatus(`Welcome, ${result.user.displayName}. Your personalised nutrition plan is coming next.`);
+      sessionStorage.setItem('nourishpath_demo_user', result.user.username);
+      navigate('/profile');
     } catch (error) {
       setStatus(error.message);
     } finally {

@@ -31,7 +31,7 @@ export default function ProfilePage() {
       const payload = { ...profile, age: Number(profile.age), heightCm: Number(profile.heightCm), weightKg: Number(profile.weightKg), allergies: profile.allergies.split(',').map((item) => item.trim()).filter(Boolean) };
       await saveProfile(username, payload);
       await acknowledgeDisclaimer(username);
-      setStatus('Profile saved. Your personalised meal plan will be ready in the next phase.');
+      navigate('/meal-plan');
     } catch (requestError) { setError(requestError.message); } finally { setIsSaving(false); }
   }
   const selectClass = 'mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-3';

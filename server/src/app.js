@@ -7,6 +7,7 @@ import { errorMiddleware, notFoundMiddleware } from './middleware/errorMiddlewar
 import authRoutes from './routes/authRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
+import mealPlanRoutes from './routes/mealPlanRoutes.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -17,6 +18,7 @@ app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, limit: 100, standardHeader
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
+app.use('/api/meal-plans', mealPlanRoutes);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 

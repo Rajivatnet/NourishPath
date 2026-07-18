@@ -25,3 +25,5 @@ async function profileRequest(path, username, options = {}) {
 export function getProfile(username) { return profileRequest('/profiles/me', username); }
 export function saveProfile(username, profile) { return profileRequest('/profiles/me', username, { method: 'PUT', body: JSON.stringify(profile) }); }
 export function acknowledgeDisclaimer(username) { return profileRequest('/profiles/disclaimer-acknowledgement', username, { method: 'POST' }); }
+export function generateMealPlan(username) { return profileRequest('/meal-plans/generate', username, { method: 'POST' }); }
+export function getTodayMealPlan(username) { return profileRequest('/meal-plans/today', username); }

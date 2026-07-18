@@ -8,6 +8,7 @@ import authRoutes from './routes/authRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import mealPlanRoutes from './routes/mealPlanRoutes.js';
+import groceryRoutes from './routes/groceryRoutes.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -19,6 +20,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/meal-plans', mealPlanRoutes);
+app.use('/api', groceryRoutes);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 

@@ -34,6 +34,16 @@ npm.cmd run dev
 
 The API health check is available at `http://localhost:5000/api/health` and the frontend runs on `http://localhost:5173` by default.
 
+## Judge-ready deployment (Render)
+
+The repository includes `render.yaml` for one public web service that serves both the React client and Express API from the same URL.
+
+1. In Render, choose **New > Blueprint** and connect the GitHub repository.
+2. Select the `main` branch and provide the requested secret environment variables: `MONGODB_URI` and `OPENAI_API_KEY`.
+3. Deploy, then open the generated `https://<service>.onrender.com` URL and verify `/api/health` returns `status: ok`.
+
+Do not add secrets to GitHub. A free Render web service can take about a minute to wake after 15 minutes without traffic; a paid instance avoids this delay.
+
 ## Structure
 
 - `client/` - React + Vite interface

@@ -3,7 +3,7 @@ services:
     name: nourishpath
     runtime: node
     plan: free
-    buildCommand: npm --prefix client ci && npm --prefix server ci && npm --prefix client run build
+    buildCommand: npm --prefix client ci --include=dev && npm --prefix server ci && npm --prefix client run build
     startCommand: npm --prefix server start
     healthCheckPath: /api/health
     envVars:

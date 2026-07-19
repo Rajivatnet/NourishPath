@@ -18,7 +18,7 @@ function validatePlan(value, targetNutrition) {
   return { targetNutrition, meals, dailyNutritionTotals: sumNutrition(meals), disclaimer, generatedBy: 'ai' };
 }
 
-export async function createAiPlan(profile, targetNutrition) {
+export async function createAiPlan(profile, targetNutrition, recentMealHistory = []) {
   if (env.aiProvider !== 'openai' || !env.openAiApiKey) throw new Error('AI provider is not configured.');
   const client = new OpenAI({ apiKey: env.openAiApiKey, timeout: 60000 });
   const completion = await client.chat.completions.create({
@@ -49,8 +49,8 @@ export async function createAiPlan(profile, targetNutrition) {
       },
     },
     messages: [
-      { role: 'system', content: 'You are a nutrition-planning assistant, not a doctor. Return JSON only. Create practical Indian meals. Never claim to diagnose, treat, cure, or prevent disease. Respect every allergy and diet restriction. Return an object with a meals array containing exactly breakfast, lunch, snack, and dinner. Each meal needs mealType, name, description, ingredients string array, estimatedPrepTimeMinutes, dietaryTags string array, and nutrition object with calories, protein, carbs, fat, fiber, sodium numeric fields.' },
-      { role: 'user', content: JSON.stringify({ profile: { age: profile.age, diet: profile.diet, allergies: profile.allergies, activityLevel: profile.activityLevel, goal: profile.goal, budgetLevel: profile.budgetLevel, cookingTime: profile.cookingTime, preferredCuisine: profile.preferredCuisine, healthFocus: 'diabetes-conscious eating and weight management' }, targetNutrition }) },
+      { role: 'system', content: 'You are a nutrition-planning assistant, not a doctor. Return JSON only. Create practical Indian meals. Never claim to diagnose, treat, cure, or prevent disease. Respect every allergy and diet restriction. Use recent meal history to avoid exact meal repetition and repeated main ingredients, except unavoidable staples. Return an object with a meals array containing exactly breakfast, lunch, snack, and dinner. Each meal needs mealType, name, description, ingredients string array, estimatedPrepTimeMinutes, dietaryTags string array, and nutrition object with calories, protein, carbs, fat, fiber, sodium numeric fields.' },
+      { role: 'user', content: JSON.stringify({ profile: { age: profile.age, diet: profile.diet, allergies: profile.allergies, activityLevel: profile.activityLevel, goal: profile.goal, budgetLevel: profile.budgetLevel, cookingTime: profile.cookingTime, preferredCuisine: profile.preferredCuisine, healthFocus: 'diabetes-conscious eating and weight management' }, targetNutrition, recentMealHistory }) },
     ],
   });
   const choice = completion.choices[0];

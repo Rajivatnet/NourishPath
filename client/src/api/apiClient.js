@@ -17,7 +17,9 @@ async function profileRequest(path, username, options = {}) {
     ...options,
     headers: { 'Content-Type': 'application/json', 'x-demo-user': username, ...options.headers },
   });
-  const payload = await response.json();
+  const responseText = await response.text();
+  let payload;
+  try { payload = responseText ? JSON.parse(responseText) : {}; } catch { payload = { message: responseText || 'The server returned an unexpected response.' }; }
   if (!response.ok) throw new Error(payload.errors?.[0] || payload.message || 'Unable to save your profile.');
   return payload;
 }
@@ -32,3 +34,5 @@ export async function getStoreLinks(item) { const response = await fetch(`${API_
 export function getDashboard(username) { return profileRequest('/dashboard/today', username); }
 export function saveMealLog(username, payload) { return profileRequest('/meal-logs', username, { method: 'POST', body: JSON.stringify(payload) }); }
 export function addWater(username, amountMl) { return profileRequest('/water-logs/entries', username, { method: 'POST', body: JSON.stringify({ amountMl }) }); }
+export function removeWater(username) { return profileRequest('/water-logs/entries', username, { method: 'DELETE' }); }
+export function generateWeeklyPlan(username, startDate) { return profileRequest('/weekly-plans/generate', username, { method: 'POST', body: JSON.stringify({ startDate }) }); }

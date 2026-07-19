@@ -5,6 +5,7 @@ import ProfilePage from '../pages/ProfilePage';
 import MealPlanPage from '../pages/MealPlanPage';
 import GroceryListPage from '../pages/GroceryListPage';
 import DashboardPage from '../pages/DashboardPage';
+import WeeklyPlanPage from '../pages/WeeklyPlanPage';
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
       <Route path="/meal-plan" element={<MealPlanPage />} />
       <Route path="/grocery-list" element={<GroceryListPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/weekly-plan" element={<WeeklyPlanPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

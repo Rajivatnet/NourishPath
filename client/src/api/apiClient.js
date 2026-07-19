@@ -32,3 +32,5 @@ export async function getStoreLinks(item) { const response = await fetch(`${API_
 export function getDashboard(username) { return profileRequest('/dashboard/today', username); }
 export function saveMealLog(username, payload) { return profileRequest('/meal-logs', username, { method: 'POST', body: JSON.stringify(payload) }); }
 export function addWater(username, amountMl) { return profileRequest('/water-logs/entries', username, { method: 'POST', body: JSON.stringify({ amountMl }) }); }
+export function removeWater(username) { return profileRequest('/water-logs/entries', username, { method: 'DELETE' }); }
+export function generateWeeklyPlan(username, startDate) { return profileRequest('/weekly-plans/generate', username, { method: 'POST', body: JSON.stringify({ startDate }) }); }

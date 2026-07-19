@@ -18,7 +18,13 @@ app.disable('x-powered-by');
 app.use(helmet());
 app.use(cors({ origin: env.clientOrigin, methods: ['GET', 'POST', 'PUT', 'DELETE'], optionsSuccessStatus: 204 }));
 app.use(express.json({ limit: '10kb' }));
-app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, limit: 100, standardHeaders: 'draft-8', legacyHeaders: false }));
+app.use('/api', rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  handler: (_request, response) => response.status(429).json({ message: 'Too many requests. Please wait a moment and try again.' }),
+}));
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);

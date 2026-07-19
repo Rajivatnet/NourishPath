@@ -17,7 +17,9 @@ async function profileRequest(path, username, options = {}) {
     ...options,
     headers: { 'Content-Type': 'application/json', 'x-demo-user': username, ...options.headers },
   });
-  const payload = await response.json();
+  const responseText = await response.text();
+  let payload;
+  try { payload = responseText ? JSON.parse(responseText) : {}; } catch { payload = { message: responseText || 'The server returned an unexpected response.' }; }
   if (!response.ok) throw new Error(payload.errors?.[0] || payload.message || 'Unable to save your profile.');
   return payload;
 }

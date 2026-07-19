@@ -13,20 +13,36 @@ export default function ProfilePage() {
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [saveConfirmed, setSaveConfirmed] = useState(false);
 
   useEffect(() => {
     if (!username) { navigate('/'); return; }
     getProfile(username).then(({ profile: saved }) => setProfile({ ...saved, allergies: saved.allergies.join(', ') })).catch((requestError) => { if (!requestError.message.includes('not found')) setError(requestError.message); });
   }, [navigate, username]);
 
-  function update(field, value) { setProfile((current) => ({ ...current, [field]: value })); }
+  useEffect(() => {
+    function preventImplicitSubmit(event) {
+      const isFormField = ['INPUT', 'SELECT'].includes(event.target.tagName);
+      if (event.key === 'Enter' && isFormField && event.target.closest('form')) event.preventDefault();
+    }
+    document.addEventListener('keydown', preventImplicitSubmit);
+    return () => document.removeEventListener('keydown', preventImplicitSubmit);
+  }, []);
+
+  function update(field, value) { setSaveConfirmed(false); setProfile((current) => ({ ...current, [field]: value })); }
   function next() {
     setError('');
     if (step === 0 && (!profile.age || !profile.heightCm || !profile.weightKg)) { setError('Please complete age, height, and weight before continuing.'); return; }
     setStep((current) => Math.min(current + 1, 2));
   }
   async function submit(event) {
-    event.preventDefault(); setIsSaving(true); setError('');
+    event.preventDefault();
+    if (!saveConfirmed) {
+      setSaveConfirmed(true);
+      setStatus('Review your routine, then tap Save profile once more to generate today’s plan.');
+      return;
+    }
+    setIsSaving(true); setError(''); setStatus('');
     try {
       const payload = { ...profile, age: Number(profile.age), heightCm: Number(profile.heightCm), weightKg: Number(profile.weightKg), allergies: profile.allergies.split(',').map((item) => item.trim()).filter(Boolean) };
       await saveProfile(username, payload);

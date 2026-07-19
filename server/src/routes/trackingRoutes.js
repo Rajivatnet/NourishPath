@@ -1,2 +1,2 @@
-import { Router } from 'express'; import { addWater, getTodayDashboard, saveMealLog } from '../controllers/trackingController.js'; import { requireDemoUser } from '../middleware/demoUserMiddleware.js';
-const router = Router(); router.use(requireDemoUser); router.post('/meal-logs', saveMealLog); router.post('/water-logs/entries', addWater); router.get('/dashboard/today', getTodayDashboard); export default router;
+import { Router } from 'express'; import { addWater, getTodayDashboard, removeWater, saveMealLog } from '../controllers/trackingController.js'; import { requireDemoUser } from '../middleware/demoUserMiddleware.js';
+const router = Router(); router.use(requireDemoUser); router.post('/meal-logs', saveMealLog); router.post('/water-logs/entries', addWater); router.delete('/water-logs/entries', removeWater); router.get('/dashboard/today', getTodayDashboard); export default router;
